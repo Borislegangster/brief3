@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="src/output.css" rel="stylesheet">
+  <link rel="stylesheet" href="src/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+    integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="js/script.js"></script>
+  <title>Formulaire de saisir des informations du cv</title>
+</head>
+
+<body>
+  <!-- Header -->
+  <header class="flex justify-between items-center px-10 py-5 shadow sticky top-0 bg-white z-50">
+    <!-- Logo -->
+    <img src="images/profil.png" alt="Profil-Image" class="size-20 rounded-full">
+
+    <!-- navbar -->
+    <nav>
+      <ul class="flex flex-row gap-6 items-center">
+        <li>
+          <a href="#" class="hover:text-blue-500">Acceuil</a>
+        </li>
+        <li>
+          <a href="#" class="hover:text-blue-500">Modèles</a>
+        </li>
+        <li>
+          <a href="#" class="hover:text-blue-500">Apropos</a>
+        </li>
+        <li>
+          <a href="#" class="hover:text-blue-500">Aide</a>
+        </li>
+        <li>
+          <a href="#" class="hover:text-blue-500">Support\FAQ</a>
+        </li>
+      </ul>
+    </nav>
+
+    <!-- Lien d'inscription et de connexion -->
+    <div class="boutons">
+      <a href="#"
+        class="btn btn-square border border-blue-500 py-2 px-2 font-bold rounded hover:bg-blue-500 hover:text-white focus:bg-blue-300 focus:text-black">S'inscrire</a>
+      <a href="#"
+        class="btn btn-square border border-blue-500 py-2 px-2 font-bold rounded bg-blue-500 text-white hover:bg-white hover:text-black focus:bg-blue-300 focus:text-white">Se
+        connecter</a>
+    </div>
+  </header>
+  <!-- End Header -->
+
+  <!-- Main Content -->
+  <main class="flex flex-row justify-center gap-3 px-3">
+    <!-- Registration Form -->
+    <form action="#" method="post" id="monFormulaire" class="my-8 bg-white p-8 rounded-lg shadow-md w-full max-w-lg">
+      <div class="mb-8">
+        <h1 class="text-4xl font-bold underline text-center">Formulaire</h1>
+        <p class="text-center font-semibold my-4">Collecte des informations relative a votre CV</p>
+      </div>
+
+      <fieldset class="border border-gray-300 p-4 rounded">
+        <legend class="text-lg font-semibold text-gray-700 px-2">Informations Personnelles</legend>
+
+        <div class="mb-4">
+          <label for="nom" class="block text-sm font-medium text-gray-700">Nom Complet :</label>
+          <input type="text" id="nom" name="nom" placeholder="Votre nom complet"
+            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm font-medium text-gray-700">
+        </div>
+
+        <div class="flex flex-row items-center justify-between gap-3">
+          <div class="mb-4 columns-sm">
+            <label for="age" class="block text-sm font-medium text-gray-700">Age :</label>
+            <input type="number" id="age" name="age" placeholder="Votre age"
+              class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm font-medium text-gray-700">
+          </div>
+
+          <div class="mb-4 columns-sm">
+            <label for="sexe" class="block text-sm font-medium text-gray-700">Sexe :</label>
+            <div
+              class="flex flex-row items-center gap-4 border border-gray-300 rounded-md px-4 py-2 justify-center mt-1">
+              <div class="flex flex-row items-center gap-1">
+                <input type="radio" name="sexe" id="homme" value="Homme">
+                <p class="block text-sm font-medium text-gray-700">Homme</p>
+              </div>
+              <div class="flex flex-row items-center gap-1">
+                <input type="radio" name="sexe" id="femme" value="Femme">
+                <p class="block text-sm font-medium text-gray-700">Femme</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-4 relative columns-sm">
+            <label for="statut" class="block text-sm font-medium text-gray-700">Situation :</label>
+            <!-- Bouton pour ouvrir le dropdown -->
+            <button id="dropdownButton" type="button"
+              class="bg-white px-4 py-2 border border-gray-300 rounded-md shadow-sm flex items-center w-full justify-between focus:outline-none focus:ring-2 focus:ring-blue-500 mt-1">
+              <span id="selectedValue" class="text-sm font-medium text-gray-700">Statut</span>
+              <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M19 9l-7 7-7-7"></path>
+              </svg>
+            </button>
+
+            <!-- Menu déroulant -->
+            <div id="dropdownMenu"
+              class="hidden absolute mt-1 w-full bg-white border border-gray-300 rounded-md shadow-lg">
+              <!-- Options du dropdown -->
+              <div class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 cursor-pointer">
+                Etudient(e)</div>
+              <div class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 cursor-pointer">Marié(e)
+              </div>
+              <div class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 cursor-pointer">
+                Célibataire</div>
+
+              <!-- Champ de saisie personnalisé -->
+              <div class="p-2 border-t border-gray-200">
+                <input type="text" id="statut" name="statut" placeholder="Autre reponse..."
+                  class="w-full px-2 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm font-medium text-gray-700">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mb-4">
+          <label for="description" class="block text-sm font-medium text-gray-700">Description :</label>
+          <textarea name="description" id="description" placeholder="Decrivez-vous, parlez de vous"
+            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 h-30 text-sm font-medium text-gray-700"></textarea>
+        </div>
+
+        <div class="flex flex-row items-center justify-between gap-3">
+          <div class="mb-4 columns-sm">
+            <label for="email" class="block text-sm font-medium text-gray-700">Email :</label>
+            <input type="email" name="email" id="email" placeholder="Addresse email"
+              class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm font-medium text-gray-700">
+          </div>
+
+          <div class="mb-4 columns-sm">
+            <label for="telephone" class="block text-sm font-medium text-gray-700">Téléphone :</label>
+            <input type="tel" name="telephone" id="telephone" placeholder="Numéro de telephone"
+              class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm font-medium text-gray-700">
+          </div>
+
+          <div class="mb-4 columns-sm">
+            <label for="addresse" class="block text-sm font-medium text-gray-700">Addresse :</label>
+            <input type="text" id="addresse" name="addresse" placeholder="Domicile(Pays, Region, Ville, Quartier)"
+              class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm font-medium text-gray-700">
+          </div>
+        </div>
+
+        <div class="mb-4 flex flex-row justify-between items-center">
+          <button type="button" id="numero"
+            class="text-sm font-medium border border-blue-500 text-white bg-blue-500 py-2 px-3 rounded-md hover:bg-white hover:text-blue-500 cursor-pointer">Ajouter
+            un numero</button>
+        </div>
+
+        <!-- Conteneur pour les numéros supplémentaires -->
+        <div id="numerosSupplementaires" class="mb-4"></div>
+
+        <div class="mb-4">
+          <label for="photo" class="block text-sm font-medium text-gray-700">Photo de profil :</label>
+          <input type="file" id="photo" name="photo" accept="image/*"
+            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+        </div>
+      </fieldset>
+      <br>
+      <fieldset class="border border-gray-300 p-4 rounded">
+        <legend class="text-lg font-semibold text-gray-700 px-2">Expériences Proféssionnelles</legend>
+
+        <div class="flex flex-row items-center justify-between gap-3">
+          <div class="mb-4 columns-md">
+            <label for="nomEntreprise" class="block text-sm font-medium text-gray-700">Nom de l'entreprise :</label>
+            <input type="text" id="nomEntreprise" name="nomEntreprise" placeholder="Nom de l'entreprise"
+              class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm font-medium text-gray-700">
+          </div>
+
+          <div class="mb-4 columns-md">
+            <label for="postOccupe" class="block text-sm font-medium text-gray-700">Poste occupé :</label>
+            <input type="text" id="postOccupe" name="postOccupe" placeholder="Poste occupé dans l'entreprise"
+              class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm font-medium text-gray-700">
+          </div>
+        </div>
+
+        <div class="mb-4">
+          <label for="duree" class="block text-sm font-medium text-gray-700">Durée :</label>
+          <div
+            class="flex flex-row items-center justify-between mt-1 border border-gray-300 py-2 px-3 rounded-md gap-3">
+            <div class="columns-md">
+              <label for="debut" class="block text-sm font-medium text-gray-700">Date de debut du service :</label>
+              <input type="date" id="debut" name="debut"
+                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm font-medium text-gray-700">
+            </div>
+
+            <div class="columns-md">
+              <label for="fin" class="block text-sm font-medium text-gray-700">Date de fin du service :</label>
+              <input type="date" id="fin" name="fin"
+                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm font-medium text-gray-700">
+            </div>
+          </div>
+        </div>
+
+        <div class="mb-4">
+          <label for="descriptionMission" class="block text-sm font-medium text-gray-700">Description :</label>
+          <textarea name="descriptionMission" id="descriptionMission"
+            placeholder="Decrire votre mission, votre role dans cette entreprise"
+            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 h-30 text-sm font-medium text-gray-700"></textarea>
+        </div>
+
+        <!-- Conteneur pour les experience supplémentaires -->
+        <div id="experienceSupplementaires" class="mb-4"></div>
+
+        <div class="mb-4 flex flex-row justify-between items-center">
+          <button type="button" id="experience"
+            class="text-sm font-medium border border-blue-500 text-white bg-blue-500 py-2 px-3 rounded-md hover:bg-white hover:text-blue-500 cursor-pointer">Ajouter
+            une experience</button>
+        </div>
+      </fieldset>
+      <br>
+      <fieldset class="border border-gray-300 p-4 rounded">
+        <legend class="text-lg font-semibold text-gray-700 px-2">Formation</legend>
+
+        <div class="flex flex-row items-center justify-between gap-3">
+          <div class="mb-4 columns-sm relative">
+            <label for="diplome" class="block text-sm font-medium text-gray-700">Diplome(s) :</label>
+            <!-- Bouton pour ouvrir le dropdown -->
+            <button id="formationButton" type="button"
+              class="bg-white px-2 py-2 border border-gray-300 rounded-md shadow-sm flex items-center justify-between focus:outline-none focus:ring-2 focus:ring-blue-500 w-full mt-1">
+              <span id="customSelectedValue" class="text-sm font-medium text-gray-700">Selectionnez</span>
+              <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M19 9l-7 7-7-7"></path>
+              </svg>
+            </button>
+
+            <!-- Menu déroulant -->
+            <div id="customDropdownMenu"
+              class="hidden absolute mt-1 w-full bg-white border border-gray-300 rounded-md shadow-lg">
+              <!-- Options du dropdown -->
+              <div class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 cursor-pointer">CEP</div>
+              <div class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 cursor-pointer">BEPC</div>
+              <div class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 cursor-pointer">PROBATOIRE
+              </div>
+              <div class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 cursor-pointer">
+                BACALAUREAT</div>
+              <div class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 cursor-pointer">BTS</div>
+              <div class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 cursor-pointer">DUT</div>
+              <div class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 cursor-pointer">DQP</div>
+              <div class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 cursor-pointer">DTS</div>
+              <div class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 cursor-pointer">LICENCE
+              </div>
+              <div class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 cursor-pointer">MASTER
+              </div>
+              <div class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 cursor-pointer">DOCTORAT
+              </div>
+
+              <!-- Champ de saisie personnalisé -->
+              <div class="p-2 border-t border-gray-200">
+                <input type="text" name="diplome" id="diplome" placeholder="Ajouter une spécification..."
+                  class="w-full px-2 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm font-medium text-gray-700">
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-4 columns-sm">
+            <label for="etablissement" class="block text-sm font-medium text-gray-700">Etablissement :</label>
+            <input type="text" id="etablissement" name="etablissement" placeholder="Nom de l'ecole"
+              class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm font-medium text-gray-700">
+          </div>
+
+          <div class="mb-4 columns-sm">
+            <label for="dateDiplome" class="block text-sm font-medium text-gray-700">Année d'obtension :</label>
+            <input type="date" id="dateDiplome" name="dateDiplome"
+              class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm font-medium text-gray-700">
+          </div>
+        </div>
+
+        <!-- Conteneur pour les nouvelles formation -->
+        <div id="formationSupplementaires" class="mb-4"></div>
+
+        <div class="mb-4 flex flex-row justify-between items-center">
+          <button type="button" id="formation"
+            class="text-sm font-medium border border-blue-500 text-white bg-blue-500 py-2 px-3 rounded-md hover:bg-white hover:text-blue-500 cursor-pointer">Ajouter
+            une formation</button>
+        </div>
+      </fieldset>
+      <br>
+      <fieldset class="border border-gray-300 p-4 rounded">
+        <legend class="text-lg font-semibold text-gray-700 px-2">Compétences</legend>
+
+        <div class="mb-4">
+          <label for="listeCompetances" class="block text-sm font-medium text-gray-700">Vos Compétences :</label>
+          <input type="text" id="listeCompetances" name="listeCompetances" placeholder="Quel compétence avez-vous ?"
+            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm font-medium text-gray-700">
+        </div>
+
+        <!-- Conteneur pour les competences supplémentaires -->
+        <div id="competenceSupplementaires" class="mb-4"></div>
+
+        <div class="mb-4 flex flex-row justify-between items-center">
+          <button type="button" id="competence"
+            class="text-sm font-medium border border-blue-500 text-white bg-blue-500 py-2 px-3 rounded-md hover:bg-white hover:text-blue-500 cursor-pointer">Ajouter
+            une compétence</button>
+        </div>
+      </fieldset>
+      <br>
+      <fieldset class="border border-gray-300 p-4 rounded">
+        <legend class="text-lg font-semibold text-gray-700 px-2">Centres d'interet</legend>
+
+        <div class="flex flex-row items-center justify-between gap-3">
+          <div class="mb-4 columns-md">
+            <label for="loisir" class="block text-sm font-medium text-gray-700">Loisir :</label>
+            <input type="text" id="loisir" name="loisir" placeholder="Quels sont vos loisirs ?"
+              class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm font-medium text-gray-700">
+          </div>
+
+          <div class="mb-4 columns-md">
+            <label for="passion" class="block text-sm font-medium text-gray-700">Passion :</label>
+            <input type="text" id="passion" name="passion" placeholder="Quels sont vos passions ?"
+              class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm font-medium text-gray-700">
+          </div>
+        </div>
+
+        <!-- Conteneur pour les loisirs supplémentaires -->
+        <div id="loisirSupplementaires" class="mb-4"></div>
+
+        <!-- Conteneur pour les passions supplémentaires -->
+        <div id="passionSupplementaires" class="mb-4"></div>
+
+        <div class="mb-4 flex flex-row justify-between items-center">
+          <button type="button" id="loisir"
+            class="text-sm font-medium border border-blue-500 text-white bg-blue-500 py-2 px-3 rounded-md hover:bg-white hover:text-blue-500 cursor-pointer">Ajouter
+            un loisir</button>
+          <button type="button" id="passion"
+            class="text-sm font-medium border border-blue-500 text-white bg-blue-500 py-2 px-3 rounded-md hover:bg-white hover:text-blue-500 cursor-pointer">Ajouter
+            une passion</button>
+        </div>
+      </fieldset>
+      <br>
+      <fieldset class="border border-gray-300 p-4 rounded">
+        <legend class="text-lg font-semibold text-gray-700 px-2">Références</legend>
+
+        <div class="flex flex-row items-center justify-between gap-3">
+          <div class="mb-4 columns-sm">
+            <label for="nomReference" class="block text-sm font-medium text-gray-700">Nom :</label>
+            <input type="text" id="nomReference" name="nomReference" placeholder="Nom complet"
+              class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm font-medium text-gray-700">
+          </div>
+
+          <div class="mb-4 columns-sm">
+            <label for="posteReference" class="block text-sm font-medium text-gray-700">Poste :</label>
+            <input type="text" id="posteReference" name="posteReference" placeholder="Poste occupé dans l'entreprise"
+              class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm font-medium text-gray-700">
+          </div>
+        </div>
+
+        <div class="flex flex-row items-center justify-between gap-3">
+          <div class="mb-4 columns-sm">
+            <label for="contactReference" class="block text-sm font-medium text-gray-700">Contact :</label>
+            <input type="tel" id="contactReference" name="contactReference" placeholder="Contact de la référence"
+              class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm font-medium text-gray-700">
+          </div>
+          <div class="mb-4 columns-sm">
+            <label for="emailReference" class="block text-sm font-medium text-gray-700">Email :</label>
+            <input type="tel" id="emailReference" name="emailReference" placeholder="Email de la référence"
+              class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm font-medium text-gray-700">
+          </div>
+        </div>
+
+        <!-- Conteneur pour les references supplémentaires -->
+        <div id="referencesSupplementaires" class="mb-4"></div>
+
+        <div class="mb-4 flex flex-row justify-between items-center">
+          <button type="button" id="reference"
+            class="text-sm font-medium border border-blue-500 text-white bg-blue-500 py-2 px-3 rounded-md hover:bg-white hover:text-blue-500 cursor-pointer">Ajouter
+            une référence</button>
+        </div>
+      </fieldset>
+      <br>
+      <fieldset class="border border-gray-300 p-4 rounded">
+        <legend class="text-lg font-semibold text-gray-700 px-2">Langues</legend>
+
+        <div class="flex flex-row items-center justify-between gap-3">
+          <div class="mb-4 relative w-full">
+            <label for="langueMetrise" class="block text-sm font-medium text-gray-700">Langue maitrisée :</label>
+            <!-- Bouton pour ouvrir le dropdown -->
+            <button id="dropdownButton3" type="button"
+              class="bg-white px-4 py-2 border border-gray-300 rounded-md shadow-sm flex items-center w-full justify-between focus:outline-none focus:ring-2 focus:ring-blue-500 mt-1">
+              <span id="selectedValue3" class="text-sm font-medium text-gray-700">Choisir une langue</span>
+              <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M19 9l-7 7-7-7"></path>
+              </svg>
+            </button>
+
+            <!-- Menu déroulant -->
+            <div id="dropdownMenu3"
+              class="hidden absolute mt-1 w-full bg-white border border-gray-300 rounded-md shadow-lg">
+              <!-- Options du dropdown -->
+              <div class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 cursor-pointer">Français
+              </div>
+              <div class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 cursor-pointer">Anglais
+              </div>
+              <div class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 cursor-pointer">Arabe
+              </div>
+              <div class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 cursor-pointer">Allemand
+              </div>
+              <div class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 cursor-pointer">Russe
+              </div>
+              <div class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 cursor-pointer">Espagnol
+              </div>
+
+              <!-- Champ de saisie personnalisé -->
+              <div class="p-2 border-t border-gray-200">
+                <input type="text" id="langueMetrise" name="langueMetrise" placeholder="Autre reponse..."
+                  class="w-full px-2 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm font-medium text-gray-700">
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-4 bg-white rounded-lg shadow-md w-full">
+            <label for="niveauMetrise" class="block text-sm font-medium text-gray-700">Niveau de maitrise :</label>
+            <input type="text" id="niveauMetrise" name="niveauMetrise" placeholder="Ex: Minimaliste, Expert..."
+              class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm font-medium text-gray-700">
+          </div>
+        </div>
+
+        <!-- Conteneur pour les langues supplémentaires -->
+        <div id="langueSupplementaires" class="mb-4"></div>
+
+        <div class="mb-4 flex flex-row justify-between items-center">
+          <button type="button" id="langue"
+            class="text-sm font-medium border border-blue-500 text-white bg-blue-500 py-2 px-3 rounded-md hover:bg-white hover:text-blue-500 cursor-pointer">Ajouter
+            une langue</button>
+        </div>
+      </fieldset>
+
+      <div class="flex justify-center mt-8">
+        <button type="button" id="genererCV"
+          class="btn btn-square border border-blue-500 py-2 px-10 font-bold rounded bg-blue-500 text-white hover:bg-white hover:text-black focus:bg-blue-300 focus:text-white">
+          Générer le CV
+        </button>
+      </div>
+    </form>
+
+
+    <!-- Previsualisation -->
+
+    <div class="my-8 bg-white p-8 rounded-lg shadow-md w-full max-w-screen-lg">
+      <div class="mb-8">
+        <h1 class="text-4xl font-bold underline text-center">Prévisualisaton</h1>
+        <p class="text-center font-semibold my-4">Votre CV est affiché ICI selon le modèle que vous avez choisi</p>
+      </div>
+
+      <div id="cv-preview">
+        <div class="containeur">
+          <div class="left-side">
+            <div class="profileTexte">
+              <div class="imgBx" id="imageCV">
+
+              </div>
+              <h2 id="nomCV">Nom</h2>
+              <h2 id="ageCV" style="font-size: 16px;">Age</h2>
+              <h2 id="sexeCV" style="font-size: 16px;">Sexe</h2>
+              <h5 id="statutCV" style="font-size: 16px;">situation actuelle</h5>
+            </div>
+            <div class="contactInfo">
+              <h3 class="title">Mes contacts</h3>
+
+              <ul>
+                <li>
+                  <span class="icon"><i class="fa fa-phone" aria-hidden="true"></i></span>
+                  <span class="text" id="numeroCV"></span>
+                </li>
+                <li>
+                  <span class="icon"><i class="fa fa-envelope" aria-hidden="true"></i></span>
+                  <span class="text" id="emailCV"></span>
+                </li>
+                <li>
+                  <span class="icon"><i class="fa fa-map-marker" aria-hidden="true"></i></span>
+                  <span class="text" id="addresseCV"></span>
+                </li>
+              </ul>
+            </div>
+            <div class="contactInfo formation">
+              <h3 class="title">Formations</h3>
+              <ul>
+                <li>
+                  <h5 id="anneeDiplomeCV"></h5>
+                  <h4 id="diplomeCV"></h4>
+                  <h4 id="etablissementCV"></h4>
+                </li>
+              </ul>
+            </div>
+            <div class="contactInfo language">
+              <h3 class="title">Langues</h3>
+              <ul>
+                <li>
+                  <h4 class="text" id="langueCV"></h4>
+                  <h5 id="niveauLangueCV"></h5>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="right-side">
+            <div class="about">
+              <h2 class="title2">Description</h2>
+              <p id="descriptionCV"></p>
+            </div>
+            <div class="about Esperience">
+              <h2 class="title2">Experience Profetionnelles</h2>
+              <div class="box">
+                <div class="year_company">
+                  <h5 id="debutCV"></h5>
+                  <h5 id="finCV"></h5>
+                  <h5 id="nomEntrepriseExperienceCV"></h5>
+                </div>
+                <div class="text">
+                  <h4 class="postExperienceCV"></h4>
+                  <p id="descriptionExperienceCV"> </p>
+                </div>
+              </div>
+            </div>
+            <div class="about competence">
+              <h2 class="title2">Competences</h2>
+              <div class="box">
+                <div>
+                  <h4 id="competenceCV"></h4>
+                </div>
+              </div>
+            </div>
+            <div class="about competence">
+              <h2 class="title2">References</h2>
+              <div class="box">
+                <div>
+                  <h4 id="nomReferenceCV"></h4>
+                </div>
+                <div>
+                  <h6 id="postReferenceCV"></h6>
+                </div>
+              </div>
+              <div class="box">
+                <div>
+                  <h4 id="numeroReferenceCV"></h4>
+                </div>
+                <div>
+                  <h6 id="emailReferenceCV"></h6>
+                </div>
+              </div>
+            </div>
+            <div class="about interest">
+              <h2 class="title2">Centre d'interet</h2>
+              <ul>
+                <li><span class="icon">&#10148;</span><span id="loisirCV"></span></li>
+                <li><span class="icon">&#10148;</span><span id="passionCV"></span></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <!-- End Registration Form -->
+
+  <!-- Footer -->
+  <footer>
+
+  </footer>
+  <!-- End Footer -->
+</body>
+
+</html>

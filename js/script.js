@@ -1,0 +1,497 @@
+$(document).ready(function () {
+  // Fonction pour mettre à jour le CV en temps réel
+  function updateCV() {
+    // Informations Personnelles
+    $("#nomCV").text($("#nom").val() || "");
+    $("#statutCV").text($("#selectedValue").text() || "");
+    $("#sexeCV").text($('input[name="sexe"]:checked').val() || "");
+    $("#ageCV").text($("#age").val() ? $("#age").val() + " ans" : "");
+    $("#descriptionCV").text($("#description").val() || "");
+
+    // Contact
+    $("#numeroCV").text($("#telephone").val() || "");
+    $("#emailCV").text($("#email").val() || "");
+    $("#addresseCV").text($("#addresse").val() || "");
+
+    // Formation
+    $("#diplomeCV").text($("#customSelectedValue").text() || "");
+    $("#etablissementCV").text($("#etablissement").val() || "");
+    $("#anneeDiplomeCV").text($("#dateDiplome").val() || "");
+
+    // Expérience Professionnelle
+    $("#postExperienceCV").text($("#postOccupe").val() || "");
+    $("#nomEntrepriseExperienceCV").text($("#nomEntreprise").val() || "");
+    $("#debutCV").text($("#debut").val() || "");
+    $("#finCV").text($("#fin").val() || "");
+    $("#descriptionExperienceCV").text($("#descriptionMission").val() || "");
+
+    // Compétences
+    $("#competenceCV").text($("#listeCompetances").val() || "");
+
+    // Langues
+    $("#langueCV").text($("#selectedValue3").text() || "");
+    $("#niveauLangueCV").text($("#niveauMetrise").val() || "");
+
+    // Centres d'intérêt
+    $("#loisirCV").text($("#loisir").val() || "");
+    $("#passionCV").text($("#passion").val() || "");
+
+    // Références
+    $("#nomReferenceCV").text($("#nomReference").val() || "");
+    $("#postReferenceCV").text($("#posteReference").val() || "");
+    $("#numeroReferenceCV").html(
+      `<i class="fa-solid fa-phone text-white"></i>&nbsp;&nbsp;${$("#contactReference").val() || ""}`
+    );
+    $("#emailReferenceCV").html(
+      `<i class="fa-solid fa-envelope text-white"></i>&nbsp;&nbsp;${$("#emailReference").val() || ""}`
+    );
+
+    // Mise à jour des champs supplémentaires
+    updateAdditionalFields();
+  }
+
+  // Fonction pour mettre à jour les champs supplémentaires dans le CV
+  function updateAdditionalFields() {
+    // Numéros supplémentaires
+    let numeros = "";
+    $("#numerosSupplementaires input").each(function () {
+      numeros += $(this).val() ? $(this).val() + "<br>" : "";
+    });
+    $("#numeroCV").append(numeros);
+
+    // Expériences supplémentaires
+    let experiences = "";
+    $("#experienceSupplementaires input").each(function () {
+      experiences += $(this).val() ? $(this).val() + "<br>" : "";
+    });
+    $("#descriptionExperienceCV").append(experiences);
+
+    // Formations supplémentaires
+    let formations = "";
+    $("#formationSupplementaires input").each(function () {
+      formations += $(this).val() ? $(this).val() + "<br>" : "";
+    });
+    $("#diplomeCV").append(formations);
+
+    // Compétences supplémentaires
+    let competences = "";
+    $("#competenceSupplementaires input").each(function () {
+      competences += $(this).val() ? $(this).val() + "<br>" : "";
+    });
+    $("#competenceCV").append(competences);
+
+    // Loisirs supplémentaires
+    let loisirs = "";
+    $("#loisirSupplementaires input").each(function () {
+      loisirs += $(this).val() ? $(this).val() + "<br>" : "";
+    });
+    $("#loisirCV").append(loisirs);
+
+    // Passions supplémentaires
+    let passions = "";
+    $("#passionSupplementaires input").each(function () {
+      passions += $(this).val() ? $(this).val() + "<br>" : "";
+    });
+    $("#passionCV").append(passions);
+
+    // Références supplémentaires
+    let references = "";
+    $("#referencesSupplementaires input").each(function () {
+      references += $(this).val() ? $(this).val() + "<br>" : "";
+    });
+    $("#nomReferenceCV").append(references);
+  }
+
+  // Fonction pour valider le formulaire
+  function validateForm() {
+    let isValid = true;
+
+    // Vérification des champs obligatoires
+    const requiredFields = [
+      "#nom", "#age", "#email", "#telephone", "#addresse", "#nomEntreprise", "#postOccupe", "#debut", "#fin", "#etablissement", "#dateDiplome"
+    ];
+
+    requiredFields.forEach((field) => {
+      if (!$(field).val()) {
+        isValid = false;
+        $(field).addClass("border-red-500");
+        $(field).next(".error-message").remove();
+        $(field).after('<span class="error-message text-red-500 text-sm">Ce champ est obligatoire.</span>');
+      } else {
+        $(field).removeClass("border-red-500");
+        $(field).next(".error-message").remove();
+      }
+    });
+
+    // Validation de l'email
+    const email = $("#email").val();
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (email && !emailRegex.test(email)) {
+      isValid = false;
+      $("#email").addClass("border-red-500");
+      $("#email").next(".error-message").remove();
+      $("#email").after('<span class="error-message text-red-500 text-sm">Veuillez entrer un email valide.</span>');
+    }
+
+    // Validation du numéro de téléphone
+    const telephone = $("#telephone").val();
+    const phoneRegex = /^\d{10}$/; // Exemple pour un numéro à 10 chiffres
+    if (telephone && !phoneRegex.test(telephone)) {
+      isValid = false;
+      $("#telephone").addClass("border-red-500");
+      $("#telephone").next(".error-message").remove();
+      $("#telephone").after('<span class="error-message text-red-500 text-sm">Veuillez entrer un numéro de téléphone valide (10 chiffres).</span>');
+    }
+
+    // Validation de l'âge (18-65 ans)
+    const age = parseInt($("#age").val());
+    if (age && (age < 18 || age > 65)) {
+      isValid = false;
+      $("#age").addClass("border-red-500");
+      $("#age").next(".error-message").remove();
+      $("#age").after('<span class="error-message text-red-500 text-sm">L\'âge doit être compris entre 18 et 65 ans.</span>');
+    }
+
+    // Validation des dates d'expérience
+    const debut = new Date($("#debut").val());
+    const fin = new Date($("#fin").val());
+    if (debut && fin && debut > fin) {
+      isValid = false;
+      $("#debut, #fin").addClass("border-red-500");
+      $("#debut").next(".error-message").remove();
+      $("#debut").after('<span class="error-message text-red-500 text-sm">La date de début doit être antérieure à la date de fin.</span>');
+    }
+
+    return isValid;
+  }
+
+  // Fonction pour sauvegarder les données dans le localStorage
+  function saveFormData() {
+    const formData = {
+      nom: $("#nom").val(),
+      age: $("#age").val(),
+      sexe: $('input[name="sexe"]:checked').val(),
+      statut: $("#selectedValue").text(),
+      description: $("#description").val(),
+      email: $("#email").val(),
+      telephone: $("#telephone").val(),
+      addresse: $("#addresse").val(),
+      nomEntreprise: $("#nomEntreprise").val(),
+      postOccupe: $("#postOccupe").val(),
+      debut: $("#debut").val(),
+      fin: $("#fin").val(),
+      descriptionMission: $("#descriptionMission").val(),
+      diplome: $("#customSelectedValue").text(),
+      etablissement: $("#etablissement").val(),
+      dateDiplome: $("#dateDiplome").val(),
+      listeCompetances: $("#listeCompetances").val(),
+      langueMetrise: $("#selectedValue3").text(),
+      niveauMetrise: $("#niveauMetrise").val(),
+      loisir: $("#loisir").val(),
+      passion: $("#passion").val(),
+      nomReference: $("#nomReference").val(),
+      posteReference: $("#posteReference").val(),
+      contactReference: $("#contactReference").val(),
+      emailReference: $("#emailReference").val(),
+    };
+
+    localStorage.setItem("formData", JSON.stringify(formData));
+  }
+
+  // Fonction pour charger les données depuis le localStorage
+  function loadFormData() {
+    const formData = JSON.parse(localStorage.getItem("formData"));
+    if (formData) {
+      $("#nom").val(formData.nom);
+      $("#age").val(formData.age);
+      $(`input[name="sexe"][value="${formData.sexe}"]`).prop("checked", true);
+      $("#selectedValue").text(formData.statut);
+      $("#description").val(formData.description);
+      $("#email").val(formData.email);
+      $("#telephone").val(formData.telephone);
+      $("#addresse").val(formData.addresse);
+      $("#nomEntreprise").val(formData.nomEntreprise);
+      $("#postOccupe").val(formData.postOccupe);
+      $("#debut").val(formData.debut);
+      $("#fin").val(formData.fin);
+      $("#descriptionMission").val(formData.descriptionMission);
+      $("#customSelectedValue").text(formData.diplome);
+      $("#etablissement").val(formData.etablissement);
+      $("#dateDiplome").val(formData.dateDiplome);
+      $("#listeCompetances").val(formData.listeCompetances);
+      $("#selectedValue3").text(formData.langueMetrise);
+      $("#niveauMetrise").val(formData.niveauMetrise);
+      $("#loisir").val(formData.loisir);
+      $("#passion").val(formData.passion);
+      $("#nomReference").val(formData.nomReference);
+      $("#posteReference").val(formData.posteReference);
+      $("#contactReference").val(formData.contactReference);
+      $("#emailReference").val(formData.emailReference);
+
+      updateCV(); // Mettre à jour le CV avec les données chargées
+    }
+  }
+
+  // Charger les données au démarrage
+  loadFormData();
+
+  // Écouteurs d'événements pour les champs de formulaire
+  $("input, textarea, select").on("input change", function () {
+    updateCV();
+  });
+
+  // Gestion des dropdowns
+  $("#dropdownButton").click(function () {
+    $("#dropdownMenu").toggle();
+  });
+
+  $("#dropdownButton3").click(function () {
+    $("#dropdownMenu3").toggle();
+  });
+
+  $("#formationButton").click(function () {
+    $("#customDropdownMenu").toggle();
+  });
+
+  // Sélection d'une option dans les dropdowns
+  $("#dropdownMenu div").click(function () {
+    $("#selectedValue").text($(this).text());
+    $("#dropdownMenu").hide();
+    updateCV();
+  });
+
+  $("#dropdownMenu3 div").click(function () {
+    $("#selectedValue3").text($(this).text());
+    $("#dropdownMenu3").hide();
+    updateCV();
+  });
+
+  $("#customDropdownMenu div").click(function () {
+    $("#customSelectedValue").text($(this).text());
+    $("#customDropdownMenu").hide();
+    updateCV();
+  });
+
+  // Gestion de l'ajout de numéros supplémentaires
+  $("#numero").click(function () {
+    const newInput = $(
+      '<div class="flex items-center gap-2 mb-2"><input type="tel" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm font-medium text-gray-700" placeholder="Numéro supplémentaire"><button type="button" class="btn-remove bg-red-500 text-white px-2 py-1 rounded-md hover:bg-red-600">Supprimer</button></div>'
+    );
+    $("#numerosSupplementaires").append(newInput);
+    newInput.find("input").on("input", updateCV);
+    newInput.find(".btn-remove").click(function () {
+      newInput.remove();
+      updateCV();
+    });
+  });
+
+  // Gestion de l'ajout d'expériences supplémentaires
+  $("#experience").click(function () {
+    const newInput = $(
+      '<div class="flex items-center gap-2 mb-2"><input type="text" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm font-medium text-gray-700" placeholder="Nom de l\'entreprise"><button type="button" class="btn-remove bg-red-500 text-white px-2 py-1 rounded-md hover:bg-red-600">Supprimer</button></div>'
+    );
+    $("#experienceSupplementaires").append(newInput);
+    newInput.find("input").on("input", updateCV);
+    newInput.find(".btn-remove").click(function () {
+      newInput.remove();
+      updateCV();
+    });
+  });
+
+  // Gestion de l'ajout de formations supplémentaires
+  $("#formation").click(function () {
+    const newInput = $(
+      '<div class="flex items-center gap-2 mb-2"><input type="text" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm font-medium text-gray-700" placeholder="Nom de la formation"><button type="button" class="btn-remove bg-red-500 text-white px-2 py-1 rounded-md hover:bg-red-600">Supprimer</button></div>'
+    );
+    $("#formationSupplementaires").append(newInput);
+    newInput.find("input").on("input", updateCV);
+    newInput.find(".btn-remove").click(function () {
+      newInput.remove();
+      updateCV();
+    });
+  });
+
+  // Gestion de l'ajout de compétences supplémentaires
+  $("#competence").click(function () {
+    const newInput = $(
+      '<div class="flex items-center gap-2 mb-2"><input type="text" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm font-medium text-gray-700" placeholder="Compétence supplémentaire"><button type="button" class="btn-remove bg-red-500 text-white px-2 py-1 rounded-md hover:bg-red-600">Supprimer</button></div>'
+    );
+    $("#competenceSupplementaires").append(newInput);
+    newInput.find("input").on("input", updateCV);
+    newInput.find(".btn-remove").click(function () {
+      newInput.remove();
+      updateCV();
+    });
+  });
+
+  // Gestion de l'ajout de loisirs supplémentaires
+  $("#loisir").click(function () {
+    const newInput = $(
+      '<div class="flex items-center gap-2 mb-2"><input type="text" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm font-medium text-gray-700" placeholder="Loisir supplémentaire"><button type="button" class="btn-remove bg-red-500 text-white px-2 py-1 rounded-md hover:bg-red-600">Supprimer</button></div>'
+    );
+    $("#loisirSupplementaires").append(newInput);
+    newInput.find("input").on("input", updateCV);
+    newInput.find(".btn-remove").click(function () {
+      newInput.remove();
+      updateCV();
+    });
+  });
+
+  // Gestion de l'ajout de passions supplémentaires
+  $("#passion").click(function () {
+    const newInput = $(
+      '<div class="flex items-center gap-2 mb-2"><input type="text" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm font-medium text-gray-700" placeholder="Passion supplémentaire"><button type="button" class="btn-remove bg-red-500 text-white px-2 py-1 rounded-md hover:bg-red-600">Supprimer</button></div>'
+    );
+    $("#passionSupplementaires").append(newInput);
+    newInput.find("input").on("input", updateCV);
+    newInput.find(".btn-remove").click(function () {
+      newInput.remove();
+      updateCV();
+    });
+  });
+
+  // Gestion de l'ajout de références supplémentaires
+  $("#reference").click(function () {
+    const newInput = $(
+      '<div class="flex items-center gap-2 mb-2"><input type="text" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm font-medium text-gray-700" placeholder="Nom de la référence"><button type="button" class="btn-remove bg-red-500 text-white px-2 py-1 rounded-md hover:bg-red-600">Supprimer</button></div>'
+    );
+    $("#referencesSupplementaires").append(newInput);
+    newInput.find("input").on("input", updateCV);
+    newInput.find(".btn-remove").click(function () {
+      newInput.remove();
+      updateCV();
+    });
+  });
+
+  // Gestion de l'upload de l'image de profil
+  $("#photo").change(function (event) {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        $("#imageCV").html(
+          `<img src="${e.target.result}" alt="PROFILE" class="rounded-full">`
+        );
+      };
+      reader.readAsDataURL(file);
+    }
+  });
+
+  // Validation et sauvegarde à la soumission
+  $("#monFormulaire").submit(function (e) {
+    e.preventDefault();
+    if (validateForm()) {
+      saveFormData();
+      alert("Données sauvegardées avec succès !");
+    }
+  });
+
+
+  function replaceUnsupportedColors() {
+    // Sélectionne tous les éléments avec des couleurs
+    const allElements = document.querySelectorAll('*');
+    
+    allElements.forEach(element => {
+        // Récupère les styles des éléments
+        const styles = getComputedStyle(element);
+        
+        // Vérifie si la couleur de fond utilise le format oklch
+        const backgroundColor = styles.backgroundColor;
+        if (backgroundColor.includes('oklch')) {
+            // Si "oklch" est utilisé, convertissez en "rgb"
+            element.style.backgroundColor = convertOKLCHToRGB(backgroundColor);
+        }
+        
+        // Vérifiez d'autres propriétés de couleur si nécessaire (border, color, etc.)
+        const color = styles.color;
+        if (color.includes('oklch')) {
+            element.style.color = convertOKLCHToRGB(color);
+        }
+    });
+  }
+  
+  // Fonction pour convertir oklch en rgb
+  function convertOKLCHToRGB(oklchColor) {
+    let rgb = 'rgb(255, 0, 0)'; 
+    // Retournez la couleur RGB convertie
+    return rgb;
+  }
+  
+  function previewPDF() {
+    const element = document.getElementById("cv-preview"); // Sélectionne l'élément CV
+  
+    // 🔍 Vérification : L'élément #cv-preview existe-t-il ?
+    if (!element) {
+        console.error("❌ Erreur : l'élément #cv-preview est introuvable !");
+        alert("Erreur : L'aperçu du CV est introuvable !");
+        return;
+    }
+  
+    // 🔍 Vérification : S'assurer que #cv-preview est bien visible
+    element.style.display = "block";
+    element.style.opacity = "1";
+  
+    console.log("✅ Élément #cv-preview trouvé !");
+    console.log("🔍 Style actuel de #cv-preview :", getComputedStyle(element).display);
+  
+    // 🕒 Ajoute un délai avant de capturer l'élément (évite les erreurs de rendu)
+    setTimeout(() => {
+        console.log("⏳ Capture en cours avec html2canvas...");
+  
+        // Remplace les couleurs non supportées avant la capture
+        replaceUnsupportedColors();
+  
+        // Teste si html2canvas capture bien le CV
+        html2canvas(element, { 
+            useCORS: true, 
+            removeContainer: true,
+            scale: 2,  // Augmente la qualité de la capture
+            logging: true,
+            allowTaint: true
+        }).then((canvas) => {
+            document.body.appendChild(canvas); // Affiche l'image pour test (débogage)
+            console.log("✅ html2canvas a bien capturé l'élément !");
+  
+            // 🔥 Génération du PDF après la capture réussie
+            html2pdf()
+                .set({
+                    margin: [10, 10, 10, 10],  // Ajuste les marges pour s'assurer que tout tient
+                    filename: "cv.pdf",
+                    image: { type: "jpeg", quality: 0.98 },
+                    html2canvas: { 
+                        scale: 2,   // Garder un bon rapport qualité/détail
+                        logging: true,
+                        useCORS: true,
+                        allowTaint: true
+                    },
+                    jsPDF: { 
+                        unit: "mm", 
+                        format: "a4", 
+                        orientation: "portrait",
+                        compressPDF: true,  // Compresser le fichier PDF
+                        pageSize: 'A4', // Page de format A4
+                    },
+                })
+                .from(element)
+                .toPdf()
+                .get('pdf')
+                .then(function (pdf) {
+                    console.log("✅ PDF généré avec succès !");
+                })
+                .save();
+        }).catch(error => {
+            console.error("❌ Erreur lors de la capture avec html2canvas :", error);
+            alert("Erreur : Impossible de capturer le CV !");
+        });
+  
+    }, 500); // Attente de 500ms pour s'assurer du bon affichage avant capture
+  }
+  
+  // Écouteur d'événement pour le bouton "Générer le CV"
+  $(document).ready(function () {
+    $("#genererCV").click(function () {
+        console.log("🎯 Bouton 'Générer le CV' cliqué !");
+        previewPDF();
+    });
+  });
+});

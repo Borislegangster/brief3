@@ -2,7 +2,7 @@ $(document).ready(function () {
   // Fonction pour mettre à jour le CV en temps réel
   function updateCV() {
     // Informations Personnelles
-    $("#nomCV").text($("#nom").val() || "");
+    $("#nomCV").text($("#nom").val() || "Nom Complet");
     $("#statutCV").text($("#selectedValue").text() || "");
     $("#sexeCV").text($('input[name="sexe"]:checked').val() || "");
     $("#ageCV").text($("#age").val() ? $("#age").val() + " ans" : "");

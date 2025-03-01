@@ -2,14 +2,14 @@
     margin: 0;
     padding: 0;
 }
-/* header{}
+header{}
 
 @keyframes backgroundCarousel{
     0%{background-image: url(images/n1.jpg);}
     33%{background-image:url(images/n4.jpg);}
     66%{background-image:url(images/femme.jpg);}
     100%{background-image: url(images/fn3.jpg);}
-} */
+}
 
 
 body{
